@@ -63,14 +63,14 @@ void loop() {
 }
 
 void inicializarRobot(){
+ 
+  for(int i=0; i <= 180; i++){
+    servoA.write(i);
+    delay(14);
+  }
+  delay(50);
+  servoA.write(90);
   
-  servoA.write(90);
-  delay(500);
-  servoA.write(45);
-  delay(500);
-  servoA.write(135);
-  delay(500);
-  servoA.write(90);
   Serial.println("Robot start");
 }
 
