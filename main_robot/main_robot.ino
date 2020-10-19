@@ -241,7 +241,7 @@ boolean existeObstaculoEn(char sentido){
 
 boolean existeObstaculo(){
   
-  if(sensorUlt() <= limiteDeteccionPeligro ){
+  if(sensorUlt() <= limiteDeteccionCorto ){
     return true;
   }
   return false;
