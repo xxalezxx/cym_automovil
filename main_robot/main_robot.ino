@@ -29,8 +29,17 @@ Servo servoA; //Crear el objeto del servo A
 #define velocidadRapida 220
 #define velocidadLenta 100
 #define velocidadPeligro 50
+#define velocidadDeGiroParcial 100
+#define velocidadDeGiroTotal 200
 //Delay de tiempo para distintos cambios de radio
 #define delayGiro 1000
+#define delayGiroTotal 3000
+//Delay de deteccion lateral
+#define delayDeteccionLateral 1200
+//Valores de angulo de servoA
+#define gradosIzquierda 135
+#define gradosDerecha 45
+#define gradosRecto 90
 //Variables adicionales del programa main
 char giroAnteriorLibre = 'i';
 
@@ -65,10 +74,14 @@ void setup() {
 }
 
 void loop() {
-  
+
+  //Modo funcionamiento 1 
   modoRobot_1();
 }
 
+//Param: --
+//Output: --
+//Inicializa el robot y sus respectivos motores por unica vez
 void inicializarRobot(){
  
   for(int i=0; i <= 180; i++){
@@ -81,6 +94,8 @@ void inicializarRobot(){
   Serial.println("Robot start");
 }
 
+//Param: --
+//Output: --
 void modoRobot_1(){
 
   int situacionObstaculo = obstaculos();
@@ -102,6 +117,9 @@ void modoRobot_1(){
   }
 }
 
+//Param: --
+//Output: --
+//
 void cambiarSentido(){
   
   pararMotores();
@@ -133,25 +151,25 @@ void cambiarSentido(){
 
 void darVuelta(){
   
-  analogWrite(enA, 100);
+  analogWrite(enA, velocidadDeGiroTotal);
   digitalWrite(inA1, HIGH);
   digitalWrite(inA2, LOW);
 
-  analogWrite(enB, 100);
+  analogWrite(enB, velocidadDeGiroTotal);
   digitalWrite(inB1, LOW);
   digitalWrite(inB2, HIGH);
   
-  delay(3000);
+  delay(delayGiroTotal);
   pararMotores();
 }
 
 void girarMotorIzquierda(){
   
-  analogWrite(enA, 100);
+  analogWrite(enA, velocidadDeGiroParcial);
   digitalWrite(inA1, HIGH);
   digitalWrite(inA2, LOW);
 
-  analogWrite(enB, 100);
+  analogWrite(enB, velocidadDeGiroParcial);
   digitalWrite(inB1, LOW);
   digitalWrite(inB2, HIGH);
 
@@ -161,11 +179,11 @@ void girarMotorIzquierda(){
 
 void girarMotorDerecha(){
   
-  analogWrite(enA, 100);
+  analogWrite(enA, velocidadDeGiroParcial);
   digitalWrite(inA1, LOW);
   digitalWrite(inA2, HIGH);
 
-  analogWrite(enB, 100);
+  analogWrite(enB, velocidadDeGiroParcial);
   digitalWrite(inB1, HIGH);
   digitalWrite(inB2, LOW);
 
@@ -223,30 +241,30 @@ char sentidoRandom(){
 boolean existeObstaculoEn(char sentido){
   
   if(sentido == 'i'){
-    servoA.write(135);
-    delay(1200);
+    servoA.write(gradosIzquierda);
+    delay(delayDeteccionLateral);
     if(existeObstaculo()){
-      servoA.write(90);
+      servoA.write(gradosRecto);
       delay(80);
       return true;
     }
     else{
-      servoA.write(90);
+      servoA.write(gradosRecto);
       delay(80);
       return false;
     }
   }
 
   if(sentido == 'd'){
-    servoA.write(45);
-    delay(1200);
+    servoA.write(gradosDerecha);
+    delay(delayDeteccionLateral);
     if(existeObstaculo()){
-      servoA.write(90);
+      servoA.write(gradosRecto);
       delay(80);
       return true;
     }
     else{
-      servoA.write(90);
+      servoA.write(gradosRecto);
       delay(80);
       return false;
     }
