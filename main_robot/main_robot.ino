@@ -18,20 +18,17 @@ Servo servoA; //Crear el objeto del servo A
 #define echo 11
 
 //Variables generales
-
 #define limiteDeteccionLargo 80.0
 #define limiteDeteccionCorto 30.0
 #define velocidadRapida 220
 #define velocidadLenta 100
 #define delayGiro 1000
 
-  int pos =0;
-
-
 
 void setup() {
 
   Serial.begin(9600);
+  randomSeed(analogRead(A0));
 
   //*---- Configuracion de puertos para salida ----*
   
@@ -48,7 +45,6 @@ void setup() {
   //Puertos: OUTPUT SensorUltrasonico
   pinMode(trig, OUTPUT);
   pinMode(echo, INPUT);
-
   pinMode(13, OUTPUT);
 
   servoA.attach(pinServoA);
@@ -59,15 +55,12 @@ void setup() {
 }
 
 void loop() {
-
+  
   modoRobot_1();
-
-
 }
 
-
-
 void inicializarRobot(){
+  
   servoA.write(90);
   delay(500);
   servoA.write(45);
@@ -75,7 +68,6 @@ void inicializarRobot(){
   servoA.write(135);
   delay(500);
   servoA.write(90);
-
   Serial.println("Robot start");
 }
 
@@ -94,10 +86,10 @@ void modoRobot_1(){
     Serial.println("--> Adelante RAPIDO");
     irAdelante('r');
   }
-  
 }
 
 void cambiarSentido(){
+  
   pararMotores();
   char direccion = nuevaOrientacion();
   if( direccion == 'i'){
@@ -118,6 +110,7 @@ void cambiarSentido(){
 }
 
 void darVuelta(){
+  
   analogWrite(enA, 100);
   digitalWrite(inA1, HIGH);
   digitalWrite(inA2, LOW);
@@ -125,13 +118,13 @@ void darVuelta(){
   analogWrite(enB, 100);
   digitalWrite(inB1, LOW);
   digitalWrite(inB2, HIGH);
-
+  
   delay(3000);
-
   pararMotores();
 }
 
 void girarMotorIzquierda(){
+  
   analogWrite(enA, 100);
   digitalWrite(inA1, HIGH);
   digitalWrite(inA2, LOW);
@@ -141,11 +134,11 @@ void girarMotorIzquierda(){
   digitalWrite(inB2, HIGH);
 
   delay(delayGiro);
-
   pararMotores();
 }
 
 void girarMotorDerecha(){
+  
   analogWrite(enA, 100);
   digitalWrite(inA1, LOW);
   digitalWrite(inA2, HIGH);
@@ -155,7 +148,6 @@ void girarMotorDerecha(){
   digitalWrite(inB2, LOW);
 
   delay(delayGiro);
-
   pararMotores();
 }
 
@@ -172,22 +164,36 @@ void pararMotores(){
 }
 
 char nuevaOrientacion(){
-  if(existeObstaculoEn('i')){
+  
+  boolean obstaculoIzquierdo = existeObstaculoEn('i');
+  boolean obstaculoDerecha = existeObstaculoEn('d');
+  if(obstaculoIzquierdo && !obstaculoDerecha){
     Serial.println("--* Obstaculo IZQUIERDA");
     return 'i';
   }
-  if(existeObstaculoEn('d')){
+  if(!obstaculoIzquierdo && obstaculoDerecha){
     Serial.println("--* Obstaculo DERECHA");
     return 'd';
+  }
+  if( !obstaculoIzquierdo && !obstaculoDerecha ){
+    Serial.println("--* Despejado lateralmente");
+    return sentidoRandom();
+    
   }
   else{
     Serial.println("--* Obstaculo LATERAL --  IR ATRAS");
     return 'a';
   }
+}
+
+char sentidoRandom(){
   
+  long numeroRandom = random(1.100);
+  return numeroRandom >= 50 ? 'i' : 'd';
 }
 
 boolean existeObstaculoEn(char sentido){
+  
   if(sentido == 'i'){
     servoA.write(135);
     delay(1200);
@@ -221,6 +227,7 @@ boolean existeObstaculoEn(char sentido){
 }
 
 boolean existeObstaculo(){
+  
   if(sensorUlt() <= limiteDeteccionCorto ){
     return true;
   }
@@ -228,6 +235,7 @@ boolean existeObstaculo(){
 }
 
 void irAdelante(char velocidad){
+  
   if(velocidad == 'r'){
     girarMotorAdelante(velocidadRapida);
   }
@@ -238,6 +246,7 @@ void irAdelante(char velocidad){
 
 //Gira los motores para adelante acorde a la velocidad ingresada
 void girarMotorAdelante(int velocidad){
+  
   analogWrite(enA, velocidad);
   digitalWrite(inA1, HIGH);
   digitalWrite(inA2, LOW);
@@ -251,6 +260,7 @@ void girarMotorAdelante(int velocidad){
 //return 1 cuando el obstaculo esta por debajo del limite corto
 //return 2 cuando el obstaculo esta por ensima del limite largo
 int obstaculos(){
+  
   long distancia = sensorUlt();
   Serial.print("==> Distancia: ");
   Serial.println(distancia);
@@ -266,6 +276,7 @@ int obstaculos(){
 
 //return long distancia en cm del sensor ultrasonico
 long sensorUlt(){ 
+  
   digitalWrite(trig,LOW);
   delayMicroseconds(10);
   digitalWrite(trig,HIGH);
