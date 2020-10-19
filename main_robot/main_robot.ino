@@ -23,6 +23,7 @@ Servo servoA; //Crear el objeto del servo A
 #define velocidadRapida 220
 #define velocidadLenta 100
 #define delayGiro 1000
+char giroAnteriorLibre = 'i';
 
 
 void setup() {
@@ -187,9 +188,15 @@ char nuevaOrientacion(){
 }
 
 char sentidoRandom(){
-  
-  long numeroRandom = random(1.100);
-  return numeroRandom >= 50 ? 'i' : 'd';
+ 
+  if( giroAnteriorLibre == 'i' ){
+    giroAnteriorLibre = 'd';
+    return 'd';
+  }
+  else{
+    giroAnteriorLibre = 'i';
+    return 'i';
+  }
 }
 
 boolean existeObstaculoEn(char sentido){
