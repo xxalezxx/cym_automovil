@@ -2,12 +2,12 @@
 #include <Servo.h>
 
   //---* Motor A *---
-#define enA 3
+#define enA 6
 #define inA1 2
 #define inA2 12
 
   //---* Motor B *---
-#define enB 5
+#define enB 9
 #define inB1 7
 #define inB2 4
 
@@ -26,11 +26,11 @@ Servo servoA; //Crear el objeto del servo A
 #define limiteDeteccionCorto 20.0
 #define limiteDeteccionPeligro 10.0
 //Velocidades del vehiculo
-#define velocidadRapida 220
-#define velocidadLenta 100
-#define velocidadPeligro 50
-#define velocidadDeGiroParcial 100
-#define velocidadDeGiroTotal 200
+#define velocidadRapida 255
+#define velocidadLenta 250
+#define velocidadPeligro 240
+#define velocidadDeGiroParcial 255
+#define velocidadDeGiroTotal 255
 //Delay de tiempo para distintos cambios de radio
 #define delayGiro 1000
 #define delayGiroTotal 3000
@@ -77,6 +77,7 @@ void loop() {
 
   //Modo funcionamiento 1 
   modoRobot_1();
+
 }
 
 //Param: --
@@ -283,6 +284,7 @@ boolean existeObstaculo(){
 void irAdelante(char velocidad){
   
   if(velocidad == 'r'){
+    Serial.println("RAPIDOOOO");
     girarMotorAdelante(velocidadRapida);
   }
   else if(velocidad == 'l'){
@@ -311,8 +313,6 @@ void girarMotorAdelante(int velocidad){
 int obstaculos(){
   
   long distancia = sensorUlt();
-  Serial.print("==> Distancia: ");
-  Serial.println(distancia);
   if( distancia <= limiteDeteccionLargo 
   && distancia >= limiteDeteccionCorto ){
      return 0;
