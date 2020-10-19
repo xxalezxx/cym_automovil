@@ -33,7 +33,7 @@ Servo servoA; //Crear el objeto del servo A
 #define velocidadDeGiroTotal 255
 //Delay de tiempo para distintos cambios de radio
 #define delayGiro 1000
-#define delayGiroTotal 3000
+#define delayGiroTotal 2000
 //Delay de deteccion lateral
 #define delayDeteccionLateral 1200
 //Valores de angulo de servoA
@@ -284,7 +284,6 @@ boolean existeObstaculo(){
 void irAdelante(char velocidad){
   
   if(velocidad == 'r'){
-    Serial.println("RAPIDOOOO");
     girarMotorAdelante(velocidadRapida);
   }
   else if(velocidad == 'l'){
