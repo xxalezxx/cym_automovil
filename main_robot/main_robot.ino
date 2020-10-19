@@ -22,9 +22,9 @@ Servo servoA; //Crear el objeto del servo A
 //---* Variables generales *---
 
 //Limites de deteccion en CENTIMETROS
-#define limiteDeteccionLargo 80.0
-#define limiteDeteccionCorto 20.0
-#define limiteDeteccionPeligro 10.0
+#define limiteDeteccionLargo 90.0
+#define limiteDeteccionCorto 50.0
+#define limiteDeteccionPeligro 20.0
 //Velocidades del vehiculo
 #define velocidadRapida 255
 #define velocidadLenta 250
