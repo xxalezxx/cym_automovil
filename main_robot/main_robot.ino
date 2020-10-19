@@ -1,37 +1,43 @@
 
 #include <Servo.h>
 
-  //Motor A
+  //---* Motor A *---
 #define enA 3
 #define inA1 2
 #define inA2 12
-  //Motor B
+
+  //---* Motor B *---
 #define enB 5
 #define inB1 7
 #define inB2 4
-  //Servo-motor A
+
+  //---* Servo-motor A *---
 Servo servoA; //Crear el objeto del servo A
 #define pinServoA 8
 
-//Sensor Ultrasonico
+//---* Sensor Ultrasonico *---
 #define trig 10
 #define echo 11
 
-//Variables generales
+//---* Variables generales *---
+
+//Limites de deteccion en CENTIMETROS
 #define limiteDeteccionLargo 80.0
 #define limiteDeteccionCorto 20.0
 #define limiteDeteccionPeligro 10.0
+//Velocidades del vehiculo
 #define velocidadRapida 220
 #define velocidadLenta 100
 #define velocidadPeligro 50
+//Delay de tiempo para distintos cambios de radio
 #define delayGiro 1000
+//Variables adicionales del programa main
 char giroAnteriorLibre = 'i';
 
 
 void setup() {
 
   Serial.begin(9600);
-  randomSeed(analogRead(A0));
 
   //*---- Configuracion de puertos para salida ----*
   
@@ -50,10 +56,11 @@ void setup() {
   pinMode(echo, INPUT);
   pinMode(13, OUTPUT);
 
+  //Configuracion del servo-motor
   servoA.attach(pinServoA);
 
+  //Inicializar robot, unica vez
   inicializarRobot();
-
   
 }
 
