@@ -230,11 +230,11 @@ char sentidoRandom(){
  
   if( giroAnteriorLibre == 'i' ){
     giroAnteriorLibre = 'd';
-    return 'd';
+    return giroAnteriorLibre;
   }
   else{
     giroAnteriorLibre = 'i';
-    return 'i';
+    return giroAnteriorLibre;
   }
 }
 
