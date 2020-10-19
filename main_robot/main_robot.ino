@@ -102,11 +102,19 @@ void cambiarSentido(){
   if( direccion == 'i'){
     Serial.println("==> Girando a la izquierda");
     girarMotorIzquierda();
+    if( existeObstaculo() ){
+      Serial.println("--> Deteccion a pesar del giro Izquierdo");
+      cambiarSentido();
+    }
     irAdelante('l');
   }
   else if( direccion == 'd'){
     Serial.println("==> Girando a la derecha");
     girarMotorDerecha();
+    if( existeObstaculo() ){
+      Serial.println("--> Deteccion a pesar del giro Derecho");
+      cambiarSentido();
+    }
     irAdelante('l');
   }
   else if( direccion == 'a'){
