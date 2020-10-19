@@ -81,7 +81,7 @@ void modoRobot_1(){
     Serial.println("--> Adelante LENTO");
     irAdelante('l');
   }
-  else if( situacionObstaculo == 1 ) {
+  else if( situacionObstaculo == 3 ) {
     Serial.println("--> Cambio de SENTIDO");
     cambiarSentido();
   }
@@ -89,7 +89,7 @@ void modoRobot_1(){
     Serial.println("--> Adelante RAPIDO");
     irAdelante('r');
   }
-  else if( situacionObstaculo == 3 ){
+  else if( situacionObstaculo == 1 ){
     Serial.println("--> Adelante LENTO PELIGRO");
     irAdelante('p');
   }
@@ -241,7 +241,7 @@ boolean existeObstaculoEn(char sentido){
 
 boolean existeObstaculo(){
   
-  if(sensorUlt() <= limiteDeteccionCorto ){
+  if(sensorUlt() <= limiteDeteccionPeligro ){
     return true;
   }
   return false;
