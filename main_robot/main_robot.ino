@@ -19,9 +19,11 @@ Servo servoA; //Crear el objeto del servo A
 
 //Variables generales
 #define limiteDeteccionLargo 80.0
-#define limiteDeteccionCorto 30.0
+#define limiteDeteccionCorto 20.0
+#define limiteDeteccionPeligro 10.0
 #define velocidadRapida 220
 #define velocidadLenta 100
+#define velocidadPeligro 50
 #define delayGiro 1000
 char giroAnteriorLibre = 'i';
 
@@ -86,6 +88,10 @@ void modoRobot_1(){
   else if( situacionObstaculo == 2 ){
     Serial.println("--> Adelante RAPIDO");
     irAdelante('r');
+  }
+  else if( situacionObstaculo == 3 ){
+    Serial.println("--> Adelante LENTO PELIGRO");
+    irAdelante('p');
   }
 }
 
@@ -249,6 +255,9 @@ void irAdelante(char velocidad){
   else if(velocidad == 'l'){
     girarMotorAdelante(velocidadLenta);
   }
+  else if( velocidad == 'p'){
+    girarMotorAdelante(velocidadPeligro);
+  }
 }
 
 //Gira los motores para adelante acorde a la velocidad ingresada
@@ -275,8 +284,12 @@ int obstaculos(){
   && distancia >= limiteDeteccionCorto ){
      return 0;
   }
-  else if( distancia <= limiteDeteccionCorto ) {
+  else if( distancia <= limiteDeteccionCorto 
+  && distancia >= limiteDeteccionPeligro) {
     return 1;
+  }
+  else if( distancia <= limiteDeteccionPeligro){
+    return 3;
   }
   return 2;
 }
